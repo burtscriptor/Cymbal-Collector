@@ -3,13 +3,14 @@
 
 <h1>Cymbal List</h1>
 
-{% for cymbal in cymbals %}
+{% for c in cymbal %}
+<a href="/cymbal/{{ c.id }}"> 
     <div class="card">
             <div class="card-content">
-                <span class=""card-title>{{ cymbal.brand}} {{cymbal.type }}</span>
-                <p>Size: {{ cymbal.size }} </p>
-                <p>Description: {{ cymbal.description }}</p>
-                {% if cymbal.sale == 'sold' %}
+                <span class=""card-title>{{ c.brand}} {{c.type }}</span>
+                <p>Size: {{ c.size }} </p>
+                <p>Description: {{ c.description }}</p>
+                {% if c.sold == True %}
                     <p>Sold</p>
                 {% else %}
                     <p>For Sale</p>

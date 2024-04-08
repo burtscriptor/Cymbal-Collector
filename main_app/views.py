@@ -1,14 +1,6 @@
 from django.shortcuts import render
+from .models import Cymbal
 
-cymbals = [
-    {'type': 'crash', 'size' : 16, 'brand': 'Zildjian', 'description': 'Light', 'sale':'sold'},
-    {'type': 'crash', 'size' : 18, 'brand': 'Sabian', 'description': 'Medium heavy', 'sale':'sold'},
-    {'type': 'crash', 'size' : 17, 'brand': 'Ufip', 'description': 'Medium', 'sale':''},
-    {'type': 'ride', 'size' : 21, 'brand': 'Zildjian', 'description': 'Washy', 'sale':'sold'},
-    {'type': 'ride', 'size' : 20, 'brand': 'Sabian', 'description': 'Light', 'sale':''},
-    {'type': 'ride', 'size' : 24, 'brand': 'Ufip', 'description': 'Pingy', 'sale':''},
-    
-    ]
 # Create your views here.
 def home(request):
     return render(request, 'home.html')
@@ -17,6 +9,11 @@ def about(request):
     return render(request, 'about.html')
 
 def index(request):
+    cymbal = Cymbal.objects.all()
     return render(request, 'index.html', {
-        'cymbals': cymbals
+        'cymbal': cymbal
     })
+
+def details(request, cymbal_id):
+    cymbal = Cymbal.objects.get(id=cymbal_id)
+    return render(request, 'details.html', { "cymbal": cymbal })
