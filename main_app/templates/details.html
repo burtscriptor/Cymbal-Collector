@@ -14,5 +14,9 @@
           <p>For Sale</p>
        {% endif %}   
   </div>
+  <div class="card-action">
+    <a href="{% url 'cymbal_update' cymbal.id %}">Edit Cymbal</a>
+    <a href="{% url 'cymbal_delete' cymbal.id %}">Delete Cymbal</a>
+  </div>
 </div>
 {% endblock %}

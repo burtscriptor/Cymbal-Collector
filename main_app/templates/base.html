@@ -17,8 +17,9 @@
           <li><a href="/" class="left brand-logo">Cymbal Collector</a></li>
         </ul>
         <ul class="right">
-          <li><a href="/about">About</a></li>
-          <li><a href="/cymbals">All cymbals</a></li>
+          <li><a href="{% url 'about' %}">About</a></li>
+          <li><a href="{% url 'create_cymbal' %}">Add a Cymbal</a></li>
+          <li><a href="{% url 'index' %}">All cymbals</a></li>
         </ul>
       </div>
     </nav>
