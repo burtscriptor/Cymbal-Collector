@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h1>Cymbal Details</h1>
+
+<div class="row">
+  <div class="col s6">
+    <div class="card">
+     <div class="card-content">
+      <span class="card-title">{{ cymbal.brand}} {{cymbal.type }}</span>
+      <p>Size: {{ cymbal.size }} </p>
+      <p>Description: {{ cymbal.description }}</p>
+      {% if cybmal.sold == True %}
+          <p>Sold</p>
+      {% else %}
+          <p>For Sale</p>
+       {% endif %}   
+  </div>
+  <div class="card-action">
+    <a href="{% url 'cymbal_update' cymbal.id %}">Edit Cymbal</a>
+    <a href="{% url 'cymbal_delete' cymbal.id %}">Delete Cymbal</a>
+    </div>
+  </div>
+</div>
+<div class="col s6">
+  <form action="{% url 'add_hire' cymbal.id %}" method="POST">
+    {% csrf_token %}
+    {{ hire_form.as_p }}
+    <input type="submit" class="btn" value="Hire">
+  </form>
+    <br>
+    {% if cymbal.hire_for_today %}
+      <div class="card-panel teal-text center-align">{{ cymbal.brand }} {{ cymbal.type }} hired for the day!</div>
+    {% else  %}
+      <div class="card-panel red-text center-align">{{ cymbal.brand }} {{ cymbal.type }} available to hire!</div>  
+    {% endif %}  
+    <table class="stripped">
+      <thread>
+        <tr><th>Date</th><th>Event</th></tr>
+      </thread>
+      <tbody>
+        {% for hire in cymbal.hire_set.all %}
+          <tr>
+            <td>{{ hire.date }}</td>
+            <td>{{ hire.get_event_display }}</td>
+          </tr>
+        {% endfor %}  
+      </tbody>
+    </table>
+</div>
+</div>
+
+<script>
+  const dateElement = document.getElementById('id_date');
+  M.Datepicker.init(dateElement, {
+    format: 'yyyy-mm-dd',
+    defaultDate: new Date(),
+    setDefaultDate: true,
+    autoClose: true
+  });
+
+  const selectElement = document.getElementById('id_event');
+  M.FormSelect.init(selectElement);
+  
+
+</script>
+{% endblock %}

@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h1>Artist Details</h1>
+
+<div class="row">
+  <div class="col s6">
+    <div class="card">
+     <div class="card-content">
+      <span class="card-title">{{ artist.name }} from {{ artist.band }}</span>
+  </div>
+  <div class="card-action">
+    <a href="{% url 'update_artist' artist.id %}">Edit Artist</a>
+    <a href="{% url 'delete_artist' artist.id %}">Delete Artist</a>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

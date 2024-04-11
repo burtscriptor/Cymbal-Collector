@@ -4,7 +4,7 @@
 <h1>Cymbal List</h1>
 
 {% for c in cymbal %}
-<a href="/cymbal/{{ c.id }}"> 
+<a href="{% url 'details' c.id %}"> 
     <div class="card">
             <div class="card-content">
                 <span class=""card-title>{{ c.brand}} {{c.type }}</span>

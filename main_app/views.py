@@ -1,10 +1,11 @@
 from django.shortcuts import render, redirect
 from django.views.generic.edit import CreateView, UpdateView, DeleteView 
-from .models import Cymbal
+from django.views.generic import DetailView, ListView
+from .models import Cymbal, Artist
 from .forms import HireForm
 from django.urls import reverse
 
-# Create your views here.
+#Cymbal
 def home(request):
     return render(request, 'home.html')
 
@@ -20,7 +21,12 @@ def index(request):
 def details(request, cymbal_id):
     cymbal = Cymbal.objects.get(id=cymbal_id)
     hire_form = HireForm()
-    return render(request, 'details.html', { "cymbal": cymbal, 'hire_form': hire_form })
+    current_artist_ids = cymbal.artist.all().values_list('id')
+    available_artist = Artist.objects.exclude(id__in=current_artist_ids)
+    return render(request, 'details.html', { "cymbal": cymbal, 
+                                            'hire_form': hire_form,
+                                             'available_artist': available_artist,
+                                              })
 
 
 def add_hire(request, cymbal_id):
@@ -31,9 +37,9 @@ def add_hire(request, cymbal_id):
         new_hire.save()
     return redirect('details', cymbal_id=cymbal_id)    
 
-class CreateCymbal(CreateView):
+class CreateCymbals(CreateView):
     model = Cymbal
-    fields = '__all__'
+    fields = ['type', 'size', 'brand', 'description', 'series']
     
 class CymbalDelete(DeleteView):
     model = Cymbal
@@ -41,4 +47,31 @@ class CymbalDelete(DeleteView):
 
 class CymbalUpdate(UpdateView):
     model = Cymbal
-    fields = ['size', 'description', 'brand']
+    fields = ['size', 'description', 'brand', 'series']
+
+#Artist
+class IndexArtist(ListView):
+    model = Artist
+
+class CreateArtist(CreateView):
+    model = Artist    
+    fields = '__all__'
+
+class Artists_Detail(DetailView):
+    model = Artist    
+
+class UpdateArtist(UpdateView):
+    model = Artist
+    fields = '__all__'
+
+class DeleteArtist(DeleteView):
+    model = Artist
+    success_url = '/artist/'
+
+def add_artist(request, cymbal_id, artist_id):
+    Cymbal.objects.get(id=cymbal_id).artist.add(artist_id)
+    return redirect('details', cymbal_id=cymbal_id)
+
+def remove_artist(request, cymbal_id, artist_id):
+    Cymbal.objects.get(id=cymbal_id).artist.remove(artist_id)
+    return redirect('details', cymbal_id=cymbal_id)

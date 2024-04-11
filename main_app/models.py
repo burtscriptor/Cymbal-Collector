@@ -8,13 +8,26 @@ EVENTS = (
     ('G', 'Gig')
 )
 
-# Create your models here.
+class Artist(models.Model):
+    name = models.CharField(max_length=256)
+    band = models.CharField(max_length=256)
+
+    def __str__(self):
+        return self.name
+    
+    def get_absolute_url(self):
+        return reverse('artists_detail', kwargs={'pk': self.id})
+
+
 class Cymbal(models.Model):
     type = models.CharField(max_length=20)
     size = models.IntegerField()
     brand = models.CharField(max_length=20)
     description = models.TextField(max_length=256)
+    series = models.CharField(max_length=20, default='')
+    favoriteOf = models.CharField(max_length=256, blank=True)
     sold = models.BooleanField(default=False)
+    artist = models.ManyToManyField(Artist)
 
     def get_absolute_url(self):
         return reverse('details', kwargs={'cymbal_id': self.id})
